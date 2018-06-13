@@ -1,0 +1,25 @@
+#!/bin/sh
+
+####################
+# MINERO RASPBERRY #
+####################
+
+#@iosjailbreakpro
+
+#Actualizar Raspberry
+sudo apt-get update
+sudo apt-get upgrade
+
+#Instalar componentes necesarios
+sudo apt-get install autoconf libcurl4-openssl-dev libjansson-dev openssl libssl-dev gcc gawk
+
+#Copiar el repositorio del minero
+git clone https://github.com/lucasjones/cpuminer-multi.git
+
+#Ir al minero y ejecutar
+cd cpuminer-multi
+./autogen.sh
+./configure
+make
+
+echo "Minero listo"
