@@ -51,7 +51,13 @@ def dormir():
     for i in range(len(raspi)):
         anterior[i]=raspi[i]
     time.sleep(randint(tmin, tmax)*60)
+  
+def inicio():
+    for i in range(1, len(raspi)):
+        os.system("ssh pi@10.40.38.10" + str(i+1) + " 'sudo cpufreq-set -r -g userspace; sudo cpufreq-set -r -f 1.4Ghz'")
+    os.system("sudo cpufreq-set -r -g userspace; sudo cpufreq-set -r -f 1.4Ghz")
 
+inicio()
 while(True):
     numero_raspis()
     frecuencia()
