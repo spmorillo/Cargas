@@ -50,7 +50,7 @@ def dormir():
     global anterior
     for i in range(len(raspi)):
         anterior[i]=raspi[i]
-    time.sleep(randint(tmin, tmax))
+    time.sleep(randint(tmin, tmax)*60)
 
 while(True):
     numero_raspis()
