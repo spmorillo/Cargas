@@ -51,16 +51,19 @@ def util():
         for i in range(len(util_result)):
                 core = filter(None, util_result[i].split(' '))
                 util_name = "Core" + str(i) + "."
-                metrics.append([util_name+"user", core[3], 'utilitation'])
-                metrics.append([util_name+"nice", core[4], 'utilitation'])
+                metrics.append([util_name+"user", core[3], 'utilization'])
+                metrics.append([util_name+"nice", core[4], 'utilization'])
 
 def read():
+        global metrics
         temp_cores(), temp_mem_volt_fan(), freq(), util(), power()
         val = collectd.Values()
         for i in range(len(metrics)):
+                val.meta = {"index": i}
                 val.plugin = metrics[i][0]
                 val.type = metrics[i][2]
                 val.values = [metrics[i][1]]
                 val.dispatch()
+        metrics = {}
 
 collectd.register_read(read,10)
