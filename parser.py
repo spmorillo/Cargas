@@ -64,6 +64,6 @@ def read():
                 val.type = metrics[i][2]
                 val.values = [metrics[i][1]]
                 val.dispatch()
-        metrics = {}
+        metrics = []
 
 collectd.register_read(read,10)
