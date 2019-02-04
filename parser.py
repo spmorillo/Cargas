@@ -12,7 +12,7 @@ def power():
                 power_name = "Socket" + str(i)
                 string = ": (.*)J"
                 match = search(string, power_result[i])
-                metrics.append([power_name, match.group(1)[:6], 'power'])
+                metrics.append([power_name, float(match.group(1)[:6]), 'power'])
 
 def temp_cores():
         temp_result = check_output(['sensors'], shell=True).split("coretemp")[1:]
@@ -34,8 +34,12 @@ def temp_mem_volt_fan():
                         name, type_val, find, metric_index[1] = 'Socket'+str(metric_index[1]), 'voltage', 1, metric_index[1]+1
                 elif("Fan Tach" in fan_mem_result[i]):
                         name, type_val, find, metric_index[2] = 'Fan'+str(metric_index[2]), 'fanspeed', 1, metric_index[2]+1
-                if(find):
-                        value, find = filter(None, fan_mem_result[i].split(' '))[3], 0
+                if(find==1 or find==2):
+                        if(find==2):
+                                value = float(filter(None, fan_mem_result[i].split(' '))[3])*1000
+                        else:
+                                value = float(filter(None, fan_mem_result[i].split(' '))[3])
+                        find = 0
                         metrics.append([name,value,type_val])
 
 def freq():
@@ -51,8 +55,8 @@ def util():
         for i in range(len(util_result)):
                 core = filter(None, util_result[i].split(' '))
                 util_name = "Core" + str(i) + "."
-                metrics.append([util_name+"user", core[3], 'utilization'])
-                metrics.append([util_name+"nice", core[4], 'utilization'])
+                metrics.append([util_name+"user", float(core[3]), 'utilization'])
+                metrics.append([util_name+"nice", float(core[4]), 'utilization'])
 
 def read():
         global metrics
