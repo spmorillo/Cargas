@@ -51,12 +51,12 @@ def freq():
                 metrics.append([freq_name, match.group(1), 'clock'])
 
 def util():
-        util_result = check_output(['mpstat -P ALL'], shell=True).split('\n')[4:-1]
-        for i in range(len(util_result)):
-                core = filter(None, util_result[i].split(' '))
-                util_name = "Core" + str(i) + "."
-                metrics.append([util_name+"user", float(core[3]), 'utilization'])
-                metrics.append([util_name+"nice", float(core[4]), 'utilization'])
+        tmp = '"-"'
+        result = check_output(["echo $(mpstat -P ALL 1 1 | awk '/Average:/ && $2 ~ /[0-9]/ {print $3 "+tmp+" $4}')"], shell=True).split(' ')
+        for i in range(len(result)):
+                core = result[i].split("-")
+                metrics.append(["Core" + str(i) + ".user", float(core[0]), 'utilization'])
+                metrics.append(["Core" + str(i) + ".nice", float(core[1]), 'utilization'])
 
 def read():
         global metrics
